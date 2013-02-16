@@ -13,16 +13,27 @@ from techstack_app.models import *
 
 def home_page(request):
     """docstring for home_page"""
-    companies = Company.objects.all()
-    variables = RequestContext(request, {
-        'companies': companies
-    })
+
+    if request.method == 'GET':
+        company = Company.objects.filter(company_name__search=request.POST['company_name'])
+        if company:
+            print company
+            return HttpResponseRedirect('/company/'+company.id)
+        else:
+            return HttpResponseRedirect('/')
+    else:
+        companies = Company.objects.all()
+        variables = RequestContext(request, {
+            'companies': companies
+        })
 
     return render_to_response('index.html', variables)
 
 
 def companies_page(request):
     # companies = Company.objects.order_by('-company_name')[:20]
+
+
     companies = Company.objects.all()
     variables = RequestContext(request, {
         'companies': companies

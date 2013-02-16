@@ -12,7 +12,11 @@
 </style>
 
 <div id="search-bar-container">
-  <input type="text" name="search-bar" value="">
+  <form action="/" method="post" accept-charset="utf-8">
+    {% csrf_token %}
+  <input type="text" name="search-bar" name='company_name' value="">
+  <p><input type="submit" value="Submit"></p>
+  </form>
 </div>
 
 
