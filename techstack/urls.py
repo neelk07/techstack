@@ -15,6 +15,7 @@ urlpatterns = patterns('',
     # url(r'^companies/new', add_company_page),
     url(r'^new', add_company_page),
     url(r'^company/(\d+)$', company_page),
+    url(r'^tagcloud', tagcloud_page),
     url(r'', home_page),
 )
 

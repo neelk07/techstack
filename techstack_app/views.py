@@ -18,7 +18,7 @@ def home_page(request):
         'companies': companies
     })
 
-    return render_to_response('base.html', variables)
+    return render_to_response('index.html', variables)
 
 
 def companies_page(request):
@@ -60,3 +60,33 @@ def add_company_page(request):
         },
         context_instance=RequestContext(request),
     )
+
+
+def tagcloud_page(request):
+    technologies = Technology.objects.order_by('?')
+
+    MAX_WEIGHT = 5
+    min_count = 0
+    max_count = 0
+
+    for tech in technologies:
+        tech_count = tech.company.count()
+        if tech_count < min_count:
+            min_count = tech_count
+        if max_count < tech_count:
+            max_count = tech_count
+
+    range = float(max_count - min_count)
+    if range == 0:
+        range = 1.0
+
+    for tech in technologies:
+        tech.weight = int(
+                MAX_WEIGHT * (tech.company.count() - min_count) /range
+        )
+
+    return render_to_response('tagcloud.html', {
+        'technologies' : technologies,
+        },
+    )
+
