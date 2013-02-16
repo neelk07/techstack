@@ -12,6 +12,8 @@ urlpatterns = patterns('',
     url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
     url(r'^admin', include(admin.site.urls)),
     url(r'^companies', companies_page),
+    # url(r'^companies/new', add_company_page),
+    url(r'^new', add_company_page),
     url(r'^company/(\d+)$', company_page),
     url(r'', home_page),
 )

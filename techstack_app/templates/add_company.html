@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block content%}
+
+<form action="" method="post">
+  {% csrf_token %}
+  {{ formset }}
+
+
+  <input type="submit" value="Submit"/>
+</form>
+
+{% endblock %}
+

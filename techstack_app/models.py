@@ -1,4 +1,5 @@
 from django.db import models
+from django.forms import ModelForm
 
 
 class Company(models.Model):
@@ -11,10 +12,8 @@ class Company(models.Model):
     description = models.TextField(blank=False)
 
 
-
     def __unicode__(self):
         return self.company_name
-
 
 
 class Technology(models.Model):
@@ -25,4 +24,9 @@ class Technology(models.Model):
 
     def __unicode__(self):
         return self.technology_name
+
+
+class CompanyForm(ModelForm):
+    class Meta:
+        model = Company
 
