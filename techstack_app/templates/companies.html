@@ -2,7 +2,6 @@
 
 {% block content %}
 
-
 <div class="hero-unit">
   {% for company in companies %}
   <div class="media">
@@ -11,15 +10,13 @@
       </a>
       <div class="media-body">
         <h4 class="media-heading">
-          <a href="{{ company.link_to_main }}">{{ company.company_name }}</a>
+          <a href="/company/{{ company.id|urlencode }}">{{ company.company_name }}</a>
           <div class="company-location pull-right">{{ company.location }}</div>
         </h4>
         <p> {{ company.description }} </p>
       </div>
     </div>
     {% endfor %}
-
   </div>
 {% endblock %}
-
 

@@ -10,8 +10,9 @@ urlpatterns = patterns('',
     # Examples:
     # url(r'^$', 'techstack.views.home', name='home'),
     url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
-    url(r'^admin/', include(admin.site.urls)),
-    url(r'^companies/', companies_page),
+    url(r'^admin', include(admin.site.urls)),
+    url(r'^companies', companies_page),
+    url(r'^company/(\d+)$', company_page),
     url(r'', home_page),
 )
 

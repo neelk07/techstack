@@ -18,14 +18,11 @@ class Company(models.Model):
 
 
 class Technology(models.Model):
-
-
     language = models.CharField(max_length='30', blank=False)
     technology_name = models.CharField(max_length='30', blank=False)
-    company = models.ForeignKey(Company)
+    company = models.ManyToManyField(Company)
 
 
-    
     def __unicode__(self):
         return self.technology_name
 
