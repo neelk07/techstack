@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<style type="text/css" media="screen">
+  #search-bar-container {
+    margin-left:auto;
+    margin-right:auto;
+    margin-top:200px;
+  }
+  
+</style>
+
+<div id="search-bar-container">
+  <form action="/search" method="get" accept-charset="utf-8">
+    {% csrf_token %}
+  <input type="text" name='company_name' value="">
+  <p><input type="submit" value="Submit"></p>
+  </form>
+</div>
+
+
+
+{% endblock %}

@@ -1,24 +1,76 @@
-{% extends "base.html" %}
+<!DOCTYPE html>
+<html lang="en">
 
-{% block content %}
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 
-<style type="text/css" media="screen">
-  #search-bar-container {
-    margin-left:auto;
-    margin-right:auto;
-    margin-top:200px;
-  }
-  
-</style>
+	<meta name="viewport" content="width=device-width,initial-scale=1">
+	<!--meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0"/--> 
 
-<div id="search-bar-container">
-  <form action="/search" method="get" accept-charset="utf-8">
-    {% csrf_token %}
-  <input type="text" name='company_name' value="">
-  <p><input type="submit" value="Submit"></p>
-  </form>
-</div>
+	<title>TechStack</title>
+	<link rel="icon" href="/static/favicon.ico" type="image/x-icon">
+	<link rel="stylesheet" href="/static/css/basic-styles.css" />
+	<link rel="stylesheet" href="/static/css/custom-styles.css" />
+	<link rel="stylesheet" href="/static/css/fontello.css">
+
+	<link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+
+</head>
+
+<body>
+	<!--div id="nav">vsdoivbspdoubvsudb</div-->
+	<div class="basic">
+
+		<div class="basic-whole" style="margin: 0 auto; margin-top: 100px;">
+			<div id="branding" style="margin: 0 auto; width: 300px; height: 300px;"><img src="/static/logo.png"></div>
+
+		</div>
+
+		<div id="search">
+
+ 			 <form action="/search/" method="get" accept-charset="utf-8">
+    			{% csrf_token %}
+  			<input type="text" name='company_name' value="">
+  			<p><input type="submit" value="Submit"></p>
+  			</form>
+		</div>
+
+	</div>
+		
+		<div id="icons" style="margin: 0 auto; margin-top: 100px;">
+		
+			<div class="basic-third" id="icontext">
+				<div id="bg">
+				<i class="icon-cloud"></i>
+				<br>
+				Tag Cloud
+				</div>
+			</div>	
+			
+			<div class="basic-third" id="icontext">
+				<div id="bg">
+				<i class="icon-list-add"></i>
+				<br>
+				Add New
+				</div>
+			</div>
+			
+			<div class="basic-third" id="icontext">
+				<div id="bg">
+				<i class="icon-list"></i>
+				<br>
+				View Lists
+				</div>
+			</div>
+		</div>
 
 
 
-{% endblock %}
+		</div>
+	</div>		
+</body>
+
+</html>
+
+
