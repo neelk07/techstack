@@ -12,28 +12,33 @@ from techstack_app.models import *
 
 
 def home_page(request):
-    """docstring for home_page"""
-
-    if request.method == 'GET':
-        company = Company.objects.filter(company_name__search=request.POST['company_name'])
-        if company:
-            print company
-            return HttpResponseRedirect('/company/'+company.id)
-        else:
-            return HttpResponseRedirect('/')
-    else:
-        companies = Company.objects.all()
-        variables = RequestContext(request, {
-            'companies': companies
-        })
+    companies = Company.objects.all()
+    variables = RequestContext(request, {
+        'companies': companies
+    })
 
     return render_to_response('index.html', variables)
 
 
+def search_controller(request):
+    param = request.GET.get('company_name', '')
+    print param
+
+    company = Company.objects.filter(company_name__icontains=param)[0]
+    print company
+    if company:
+        redirect_url = '/company/%s' % company.id
+        return HttpResponseRedirect(redirect_url)
+    else:
+        return HttpResponseRedirect('/')
+
+def suggestion_controller(request):
+    companies = Company.objects.filter(company_name__icontains=param)
+    print companies
+
+
+
 def companies_page(request):
-    # companies = Company.objects.order_by('-company_name')[:20]
-
-
     companies = Company.objects.all()
     variables = RequestContext(request, {
         'companies': companies
@@ -46,11 +51,13 @@ def company_page(request, company_id):
     company = get_object_or_404(
             Company, id=company_id)
 
-    technologies = Technology.objects.filter(company__id__exact=company_id)
+    tech_tags = Technology.objects.filter(company__id__exact=company_id)
+    available_tech = Technology.objects.all()
 
     variables = RequestContext(request, {
         'company': company,
-        'technologies': technologies
+        'tech_tags': tech_tags,
+        'available_tech': available_tech,
     })
     return render_to_response('company_page.html', variables)
 

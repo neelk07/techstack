@@ -3,17 +3,46 @@
 
 {% block content %}
 
+<style type="text/css" media="screen">
+
+    .company-profile {
+        width: 250px;
+        height: 750px;
+    }
+
+    .company-profile #company-logo-img {
+        height: 210px;
+        width: 210px;
+    }
+
+    .stacks-column {
+        width: 800px;
+    }
+</style>
+
 <div class="hero-unit">
-
-  <h1> {{ company.company_name }} </h1>
-  <h1> {{ company.location }} </h1>
-
-  {% for tech in technologies %}
-  <h1> {{ tech.language }} </h1>
-  <h1> {{ tech.technology_name }} </h1>
-
-
-  {% endfor %}
+    <div class="company-profile">
+        <div class="info-column">
+            <div id="company-logo-img">
+            </div>
+            <div id="company-name">
+                {{ company.company_name }}        
+            </div>
+            <div id="company-location">
+                {{ company.location }} 
+            </div>
+        </div>
+        <div class="stacks-column">
+            {% for tech in technologies %}
+                <div id="name">
+                  <h1> {{ tech.language }} </h1>
+                  <h1> {{ tech.technology_name }} </h1>
+                </div>
+            {% endfor %}  
+        </div>
+    </div>
 </div>
+
+<input type="button" name="add-tech-btn" value="Add Tech">
 {% endblock %}
 
