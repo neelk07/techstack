@@ -47,7 +47,7 @@ class Post(models.Model):
     company = models.ForeignKey(Company)
 
     def __unicode__(self):
-        return u'%s %s' % (self.title, self.company.company_name)
+        return u'%s - %s' % (self.company.company_name, self.title)
 
 
 
