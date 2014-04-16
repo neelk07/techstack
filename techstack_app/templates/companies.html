@@ -14,7 +14,7 @@
           <a href="/company/{{ company.id|urlencode }}">{{ company.company_name }}</a>
           <div class="company-location pull-right">{{ company.location }}</div>
         </h4>
-        <p> {{ company.description }} </p>
+        {{ company.description|safe}}
       </div>
     </div>
     {% endfor %}

@@ -12,3 +12,7 @@ class TechnologyAdmin(admin.ModelAdmin):
 
 admin.site.register(Technology, TechnologyAdmin)
 
+class PeopleAdmin(admin.ModelAdmin):
+	pass
+
+admin.site.register(People, PeopleAdmin)
