@@ -8,6 +8,7 @@ from django.shortcuts import render_to_response, get_object_or_404
 from django.forms import ModelForm
 from django.forms.models import modelform_factory
 from techstack_app.models import *
+from glassdoor import get
 
 #GLOBAL VARIABLES
 CRUNCHBASE_API_KEY = "qh8x7d9kjfkxz6b2ftem46xy"
@@ -16,6 +17,11 @@ CRUNCHBASE_API_KEY = "qh8x7d9kjfkxz6b2ftem46xy"
 def crunchbase_api(company_name):
     return "http://api.crunchbase.com/v/1/company/" + company_name + ".js?api_key=" + CRUNCHBASE_API_KEY
 
+#Clean the company search
+def clean_company(company_name):
+    company_name = company_name.lower()
+    company_name = company_name.capitalize()
+    return company_name
 
 def home_page(request):
     companies = Company.objects.all()
@@ -24,20 +30,14 @@ def home_page(request):
     })
     return render_to_response('index.html', variables)
 
-
-
 def search_controller(request):
     param = request.GET.get('company_name', '')
-
-    #cleaning the search query
-    company_name = param
-    company_name = company_name.lower()
-    company_name = company_name.capitalize()
-
+    company_name = clean_company(param)
     company = Company.objects.filter(company_name=company_name)
     print company
     if company:     #company already exists
         company = company[0]
+        #print get(company) --> glassdoor works
         redirect_url = '/company/%s' % company.id
     else:           #create company page
         success = create_company_page(param)
@@ -53,8 +53,6 @@ def suggestion_controller(request):
     companies = Company.objects.filter(company_name__icontains=param)
     print companies
 
-
-
 def companies_page(request):
     companies = Company.objects.all()
     variables = RequestContext(request, {
@@ -62,7 +60,6 @@ def companies_page(request):
     })
 
     return render_to_response('companies.html', variables)
-
 
 def company_page(request, company_id):
     company = get_object_or_404(
@@ -132,11 +129,8 @@ def create_company_page(company_name):
         first = person['first_name']
         last = person['last_name']
         People.objects.create(first_name = first, last_name = last, title = title, company = company)
-        print "success"
 
     return True
-
-
 
 
 def tagcloud_page(request):
