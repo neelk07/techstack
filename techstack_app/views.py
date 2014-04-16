@@ -13,6 +13,8 @@ from glassdoor import get
 #GLOBAL VARIABLES
 CRUNCHBASE_API_KEY = "qh8x7d9kjfkxz6b2ftem46xy"
 
+DROPBOX_ENGINEERING_BLOG_API_URL = "http://apify.heroku.com/api/dbeb.json"
+
 #Generates Crunchbase Request 
 def crunchbase_api(company_name):
     return "http://api.crunchbase.com/v/1/company/" + company_name + ".js?api_key=" + CRUNCHBASE_API_KEY
@@ -49,6 +51,7 @@ def search_controller(request):
 
     return HttpResponseRedirect(redirect_url)
 
+
 def suggestion_controller(request):
     companies = Company.objects.filter(company_name__icontains=param)
     print companies
@@ -58,7 +61,6 @@ def companies_page(request):
     variables = RequestContext(request, {
         'companies': companies
     })
-
     return render_to_response('companies.html', variables)
 
 def company_page(request, company_id):
@@ -91,6 +93,35 @@ def add_company_page(request):
         "formset": form,
         },
         context_instance=RequestContext(request),
+    )
+
+
+def tagcloud_page(request):
+    technologies = Technology.objects.order_by('?')
+
+    MAX_WEIGHT = 5
+    min_count = 0
+    max_count = 0
+
+    for tech in technologies:
+        tech_count = tech.company.count()
+        if tech_count < min_count:
+            min_count = tech_count
+        if max_count < tech_count:
+            max_count = tech_count
+
+    range = float(max_count - min_count)
+    if range == 0:
+        range = 1.0
+
+    for tech in technologies:
+        tech.weight = int(
+                MAX_WEIGHT * (tech.company.count() - min_count) /range
+        )
+
+    return render_to_response('tagcloud.html', {
+        'technologies' : technologies,
+        },
     )
 
 ''' FUNCTION DEF:
@@ -133,31 +164,25 @@ def create_company_page(company_name):
     return True
 
 
-def tagcloud_page(request):
-    technologies = Technology.objects.order_by('?')
+def retrieve_blog(url, company_name):
+    serialized_data = urllib2.urlopen(url).read()
+    json_data = json.loads(serialized_data)
 
-    MAX_WEIGHT = 5
-    min_count = 0
-    max_count = 0
+    company_name = clean_company(company_name)
+    company = Company.objects.get(company_name = company_name)
 
-    for tech in technologies:
-        tech_count = tech.company.count()
-        if tech_count < min_count:
-            min_count = tech_count
-        if max_count < tech_count:
-            max_count = tech_count
+    #look through array of blog posts
+    for data in json_data:
+        title = data['title']
+        author = data['author']
+        date = data['date']
+        description = data['post']
+        Post.objects.create(title = title, author = author, description = description, date = date, company = company)
 
-    range = float(max_count - min_count)
-    if range == 0:
-        range = 1.0
 
-    for tech in technologies:
-        tech.weight = int(
-                MAX_WEIGHT * (tech.company.count() - min_count) /range
-        )
 
-    return render_to_response('tagcloud.html', {
-        'technologies' : technologies,
-        },
-    )
+
+
+
+
 

@@ -40,8 +40,15 @@ class Technology(models.Model):
 
 class Post(models.Model):
     title = models.CharField(max_length=300)
+    author = models.CharField(max_length = 200)
     description = models.TextField()
-    url = models.URLField(max_length=300)
+    date = models.CharField(max_length = 300)
+    url = models.URLField(max_length=300, blank = True)
+    company = models.ForeignKey(Company)
+
+    def __unicode__(self):
+        return u'%s %s' % (self.title, self.company.company_name)
+
 
 
 

@@ -16,3 +16,5 @@ class PeopleAdmin(admin.ModelAdmin):
 	pass
 
 admin.site.register(People, PeopleAdmin)
+
+admin.site.register(Post)
