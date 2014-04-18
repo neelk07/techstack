@@ -3,46 +3,70 @@
 
 {% block content %}
 
-<style type="text/css" media="screen">
+      <div class="blog-header">
+        <a href="{{company.homepage_url}}"><h1 class="blog-title">{{company.company_name}}</h1></a>
+        <p class="lead blog-description">{{company.category}}</p>
+      </div>
 
-    .company-profile {
-        width: 250px;
-        height: 750px;
-    }
+      <div class="row">
 
-    .company-profile #company-logo-img {
-        height: 210px;
-        width: 210px;
-    }
-
-    .stacks-column {
-        width: 800px;
-    }
-</style>
-
-<div class="hero-unit">
-    <div class="company-profile">
-        <div class="info-column">
-            <div id="company-logo-img">
-            </div>
-            <div id="company-name">
-                {{ company.company_name }}        
-            </div>
-            <div id="company-location">
-                {{ company.location }} 
-            </div>
-        </div>
-        <div class="stacks-column">
-            {% for tech in technologies %}
-                <div id="name">
-                  <h1> {{ tech.language }} </h1>
-                  <h1> {{ tech.technology_name }} </h1>
+        <div class="col-sm-12 blog-main">
+            <h4>Founded: {{company.founded_year}}</h4>
+            <h4>Employee: {{company.employees}}</h4>
+            <h4>Total Money Raised: {{company.total_money_raised}}</h4>
+            
+            <div class="panel-group" id="accordion1">
+              <div class="panel panel-default">
+                <div class="panel-heading">
+                  <h4 class="panel-title">
+                    <a data-toggle="collapse" data-parent="#accordion1" href="#collapseOne">
+                        Company Description   
+                    </a>
+                  </h4>
                 </div>
-            {% endfor %}  
-        </div>
-    </div>
-</div>
+                <div id="collapseOne" class="panel-collapse collapse in">
+                  <div class="panel-body">
+                    {{company.description|safe}}
+                  </div>
+                </div>
+              </div>
+            </div>
 
-<input type="button" name="add-tech-btn" value="Add Tech">
+            <div class="panel-group" id="accordion2">
+              <h3>{{company.company_name}}'s Engineering Blogs (Click to Read)</h3>
+              <div class="panel panel-default">
+                {% for post in posts %}
+                <div class="panel-heading">
+                  <h4 class="panel-title">
+                    <a data-toggle="collapse" data-parent="#accordion2" href="#collapse{{post.id}}">
+                      <p>{{post.title}}</p>
+                    </a>
+                  </h4>
+                </div>
+                <div id="collapse{{post.id}}" class="panel-collapse collapse">
+                  <div class="panel-body">
+                    {% if post.description|length < 200 %}
+                    <p><a href="{{post.url}}">{{post.description|safe}}</a></p>  
+                    {% else %}
+                    <p>{{post.description|safe}}</p> 
+                    {% endif %} 
+                  </div>
+                </div>
+                {% endfor %}
+              </div>
+            </div>
+
+        </div><!-- /.blog-main -->
+
+      </div><!-- /.row -->
+
+    </div><!-- /.container -->
+
+    <div class="blog-footer">
+      <p>TechStack built by Neel Kothari</p>
+      <p>
+        <a href="#">Back to top</a>
+      </p>
+    </div>
 {% endblock %}
 

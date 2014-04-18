@@ -23,6 +23,14 @@ def create_company_page(company_name):
     cb_url = crunchbase_api(company_name)
     serialized_data = urllib2.urlopen(cb_url).read()
     json_data = json.loads(serialized_data)
+
+    #error checking
+    try:
+        error = json_data['error']
+    except Exception, e:
+        pass
+    else:
+        return None
     
     #retrieve all important properties from crunchbase
     c_name = json_data['name']
@@ -53,4 +61,4 @@ def create_company_page(company_name):
         last = person['last_name']
         People.objects.create(first_name = first, last_name = last, title = title, company = company)
 
-    return True
+    return c_name

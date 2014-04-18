@@ -21,8 +21,6 @@ def home_page(request):
 
 
 def search_controller(request):
-    square_blogs()
-    dropbox_blogs()
     param = request.GET.get('company_name', '')
     company_name = clean_company(param)
     company = Company.objects.filter(company_name=company_name)
@@ -31,9 +29,9 @@ def search_controller(request):
         #print get(company) --> glassdoor works
         redirect_url = '/company/%s' % company.id
     else:           #create company page
-        success = create_company_page(company_name)
-        if success:
-            company = Company.objects.filter(company_name=company_name)[0]
+        c_name = create_company_page(company_name)
+        if c_name != None:
+            company = Company.objects.filter(company_name=c_name)[0]
             redirect_url = '/company/%s' % company.id
         else:
             redirect_url = '/'
@@ -55,14 +53,14 @@ def companies_page(request):
 
 
 def company_page(request, company_id):
-    company = get_object_or_404(
-            Company, id=company_id)
-
+    company = get_object_or_404(Company, id=company_id)
+    posts = Post.objects.filter(company = company)
     tech_tags = Technology.objects.filter(company__id__exact=company_id)
     available_tech = Technology.objects.all()
 
     variables = RequestContext(request, {
         'company': company,
+        'posts':posts,
         'tech_tags': tech_tags,
         'available_tech': available_tech,
     })

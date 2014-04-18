@@ -2,22 +2,29 @@
 
 {% block content %}
 
-<div class="hero-unit">
     <a href="/new">Add Company</a>
-  {% for company in companies %}
-  <div class="media">
-    <a class="pull-left" href="#">
-      <img class="media-object" data-src="holder.js/64x64">
-      </a>
-      <div class="media-body">
-        <h4 class="media-heading">
-          <a href="/company/{{ company.id|urlencode }}">{{ company.company_name }}</a>
-          <div class="company-location pull-right">{{ company.location }}</div>
-        </h4>
-        {{ company.description|safe}}
-      </div>
-    </div>
-    {% endfor %}
-  </div>
+
+            <div class="panel-group" id="accordion2">
+              <h3>Companies</h3>
+              <div class="panel panel-default">
+                {% for company in companies %}
+                <div class="panel-heading">
+                  <h4 class="panel-title">
+                    <a data-toggle="collapse" data-parent="#accordion2" href="#collapse{{company.id}}">
+                      <p>{{company.company_name}}</p>
+                    </a>
+                  </h4>
+                </div>
+                <div id="collapse{{company.id}}" class="panel-collapse collapse">
+                  <div class="panel-body">
+                    {{company.description|safe}}
+                    <a href="/company/{{company.id}}">Go To {{company.company_name}}'s Page</a>
+
+                  </div>
+                </div>
+                {% endfor %}
+              </div>
+            </div>
+
 {% endblock %}
 

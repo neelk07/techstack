@@ -26,7 +26,7 @@ class People(models.Model):
     last_name = models.CharField(max_length = 50)
     title = models.CharField(max_length = 50)
     company = models.ForeignKey(Company)
-
+    
     def __unicode__(self):
         return  u'%s %s - %s' %(self.first_name, self.last_name, self.company.company_name)
 
