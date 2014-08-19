@@ -5,6 +5,7 @@ from django.template import Context, RequestContext
 from django.template.loader import get_template
 from django.shortcuts import render_to_response, get_object_or_404
 from django.forms import ModelForm
+from django.http import HttpResponse
 from django.forms.models import modelform_factory
 from techstack_app.models import *
 from engineering_blog_parsing import *
@@ -24,11 +25,11 @@ def search_controller(request):
     param = request.GET.get('company_name', '')
     company_name = clean_company(param)
     company = Company.objects.filter(company_name=company_name)
-    if company:     #company already exists
+    if company:                         #company already exists
         company = company[0]
-        #print get(company) --> glassdoor works
+                                                                            #print get(company) --> glassdoor works
         redirect_url = '/company/%s' % company.id
-    else:           #create company page
+    else:                                  #create company page
         c_name = create_company_page(company_name)
         if c_name != None:
             company = Company.objects.filter(company_name=c_name)[0]
@@ -112,6 +113,20 @@ def tagcloud_page(request):
         'technologies' : technologies,
         },
     )
+
+def parse_blogs(request):
+  return_message = {}
+  try:
+    square_blogs()
+    dropbox_blogs()
+  except:
+    return_message['status'] = 'Error'
+    return_message['message'] = sys.exc_info()[0]
+    return HttpResponse(json.dumps(return_message), content_type="application/json")
+  else:
+    return_message['status'] = 'Success'
+    return_message['message'] = 'Parsed Blogs'
+    return HttpResponse(json.dumps(return_message), content_type="application/json")
 
 
 '''AUXILLARY FUNCTIONS '''

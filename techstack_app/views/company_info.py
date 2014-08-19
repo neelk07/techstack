@@ -1,6 +1,5 @@
 import json
 import urllib2
-from glassdoor import get
 from techstack_app.models import *
 
 
