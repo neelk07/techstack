@@ -1,7 +1,6 @@
 TechStack
 =========
-
-coyote hackathon project (in progress)
+NO LONGER WORKING ON IT BECAUSE MANY OTHER WEBSITES DO ESSENTIALLY THE SAME THING
 
 What is it?
 ===========
